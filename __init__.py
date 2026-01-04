@@ -294,21 +294,43 @@ class Astro:
         print(f'\nkinetic_energy: {round(kinetic_energy if kinetic_energy!=self.G_2 else k_e,3)} (Joules or kg.m^2.s^-2)\npotential_energy: {round(potential_energy if potential_energy!=-self.G else p_e,3)} (Joules or kg.m^2.s^-2)\ntotal_energy: {round(total_energy if total_energy!=-self.G_2 else total_energy_2,3)} (Joules or kg.m^2.s^-2)\n')
 
 
-    def orbit(self,days_elapsed: int=0,period=-1):
-        # using days, it calculates the position of a planet in a perfect circle. just an example. Planet orbits are eccentric
-        #mean_motion=360/period # period in days
-        #mean_anomally=mean_motion*days_elapsed
+    def orbit(self,days_elapsed: int=0,period: int=-1,planet: int=None): # default for planet is Earth
+        '''using days, it calculates the position of a planet in a perfect circle. just an example. Planet orbits are eccentric'''
         console=Console()
-        table=Table(title='...SOLAR SYSTEM...')
-        table.add_column('Day',style='Cyan')
-        table.add_column('Angle\n(degrees)',style='magenta')
-        table.add_column('Radians',style='Cyan')
-        table.add_column('x-Coord',style='magenta')
-        table.add_column('y-Coord',style='Cyan')
+        if planet:
+            if 1<=planet<=11:
+                print('initializing...')
+            else:
+                print('\nonly 11 objects can be categorized as planet like because of their gravity in the solar system.use 1--11.\n')
+                sys.exit(0)
+
+        values={'1':88,'2':225,'3':365,'4':687,'5':1681,'6':4333,'7':10760,'8':30687,'9':60194,'10':90472,'11':204190} # the values are the period in days
+
+        if days_elapsed!=0:
+            mean_motion=360/(values['1'] if planet==1 else values['2'] if planet==2 else values['3'] if planet==3 else values['4'] if planet==4 else values['5'] if planet==5 else values['6'] if planet==6 else values['7'] if planet==7 else values['8'] if planet==8 else values['9'] if planet==9 else values['10'] if planet==10 else values['11'] if planet==11 else values['3'])  #else earths period 365..
+
+            mean_anomaly=mean_motion*days_elapsed
+            x_coord=math.cos(math.radians(mean_anomaly))
+            y_coord=math.sin(math.radians(mean_anomaly))
+            
+            console.print(f'[bold yellow]For day {days_elapsed}: {(x_coord,y_coord)}')
+
+            del mean_motion
+            del mean_anomaly               
+            del x_coord
+            del y_coord
 
         if period!=-1:
+            table=Table(title='...SOLAR SYSTEM...')
+            table.add_column('Day',style='Cyan')
+            table.add_column('Angle\n(degrees)',style='magenta')
+            table.add_column('Radians',style='Cyan')
+            table.add_column('x-Coord',style='magenta')
+            table.add_column('y-Coord',style='Cyan') # all of this should be in the if statement..next
+
+        #if period!=-1:
             for day in range(period+1):
-                mean_motion=360/period
+                mean_motion=360/period #period in days
                 mean_anomaly=mean_motion*day
                 radian=math.radians(mean_anomaly)
                 x_coord=math.cos(math.radians(mean_anomaly))
@@ -316,7 +338,7 @@ class Astro:
                 #console.print(f'\n[bold yellow]Day {day}: {(x_coord,y_coord)}[/bold yellow]\n')
                 table.add_row(f'{day}',f'{mean_anomaly}',f'{radian}',f'{x_coord}',f'{y_coord}')
             
-        console.print(table)
+            console.print(table)
 
 
     def eccent(self,r_a: float=1,r_p: float=1,tble=None):
@@ -438,10 +460,11 @@ def distance(astro,parallax,distance,light_years):
 
 @term.command()
 @click.option('--days_elapsed',default=0,help='the number of days elapsed since the epoch',type=int)
-@click.option('--period',default=-1,help='the period in days for the planet. Use float as the number type')
+@click.option('--period',default=-1,help='the period in days for the planet. Use int as the number type',type=int)
+@click.option('--planet',default=None,help='the object value 1 for Mercury\n2 for Venus\n3 for Earth\n4 for Mars\n5 for Ceres \n6 for Jupiter\n7 for Saturn\n8 for Uranus\n9 for Neptune\n10 for Pluto\n11 for Eris.',type=int)
 @click.pass_obj
-def orbit(astro,days_elapsed,period):
-    astro.orbit(days_elapsed,period)
+def orbit(astro,days_elapsed,period,planet):
+    astro.orbit(days_elapsed,period,planet)
 
 
 if __name__ == '__main__':                                          term()

@@ -273,7 +273,7 @@ class Astro:
         print(f'\nproper_time: {proper}\ncoordinate_time: {coordinate}\nexplanation: {console.print(f"[bold yellow]for every one unit of time that is measured for a distant stationary object only {proper} has passed for the object at or near the Masses surface and for every one unit of time that is measured for an object near the mass only {coordinate} has passed for the distant stationary object[/bold yellow]")}')
 
 
-    def energy(self,k_e: fhu7loat=1,p_e: float=1,mass: float=1,Mass: float=1,distance: float=1,tble=None):
+    def energy(self,k_e: float=1,p_e: float=1,mass: float=1,Mass: float=1,distance: float=1,tble=None):
         '''calculates the total mechanical energy of an orbiting body'''
         console=Console()
         kinetic_energy = ((self.G*Mass*mass)/(2*distance)) #k=-E, k=-1/2U where U is the potential energy. E=-k
@@ -294,9 +294,13 @@ class Astro:
         print(f'\nkinetic_energy: {round(kinetic_energy if kinetic_energy!=self.G_2 else k_e,3)} (Joules or kg.m^2.s^-2)\npotential_energy: {round(potential_energy if potential_energy!=-self.G else p_e,3)} (Joules or kg.m^2.s^-2)\ntotal_energy: {round(total_energy if total_energy!=-self.G_2 else total_energy_2,3)} (Joules or kg.m^2.s^-2)\n')
 
 
-    def orbit(self,days_elapsed: int=0,period: int=-1,planet: int=None,eccentric=None,tble=None): # default for planet is Earth
+    def orbit(self,days_elapsed: int=0,period: int=-1,planet: int=None,eccentric=None): # default for planet is Earth
         '''using days, it calculates the position of a planet in a perfect circle. just an example. Planet orbits are eccentric'''
         console=Console()
+        mean_motion=None
+        mean_anomaly=None
+        x_coord=None
+        y_coord=None
         if planet:
             if 1<=planet<=11:
                 print('initializing...')
@@ -305,13 +309,13 @@ class Astro:
                 sys.exit(0)
 
         values={'1':88,'2':225,'3':365,'4':687,'5':1681,'6':4333,'7':10759,'8':30685,'9':60190,'10':90465,'11':204174} # the values are the period in days. used 365.25
-        vallues={'1':self.Mercury_e,'2':self.Venus_e,'3':self.Earth_e,'4':self.Mars_e,'5':self.Ceres_e,'6':self.Jupiter_e,'7':self.Saturn_e,'8':self.Uranus_e,'9':self.Neptune,'10':self.Pluto_e,'11':self.Eris_e}
+        vallues={'1':self.Mercury_e,'2':self.Venus_e,'3':self.Earth_e,'4':self.Mars_e,'5':self.Ceres_e,'6':self.Jupiter_e,'7':self.Saturn_e,'8':self.Uranus_e,'9':self.Neptune_e,'10':self.Pluto_e,'11':self.Eris_e}
         valllues={'88':self.Mercury_e,'225':self.Venus_e,'365':self.Earth_e,'687':self.Mars_e,'1681':self.Ceres_e,'4333':self.Jupiter_e,'10759':self.Saturn_e,'30685':self.Uranus_e,'60190':self.Neptune_e,'90465':self.Pluto_e,'204174':self.Eris_e} #i can only use the vallues dictionary
         val={'1':self.Mercury_AU,'2':self.Venus_AU,'3':self.Earth_AU,'4':self.Mars_AU,'5':self.Ceres_AU,'6':self.Jupiter_AU,'7':self.Saturn_AU,'8':self.Uranus_AU,'9':self.Neptune_AU,'10':self.Pluto_AU,'11':self.Eris_AU}
 
 
-        if days_elapsed!=0:
-            mean_motion=360/(values['1'] if planet==1 else values['2'] if planet==2 else values['3'] if planet==3 else values['4'] if planet==4 else values['5'] if planet==5 else values['6'] if planet==6 else values['7'] if planet==7 else values['8'] if planet==8 else values['9'] if planet==9 else values['10'] if planet==10 else values['11'] if planet==11 else values['3'])  #else earths period 365..
+        if days_elapsed!=0 and eccentric==None:
+            mean_motion=360/(values['1'] if planet==1 else values['2'] if planet==2 else values['3'] if planet==3 else values['4'] if planet==4 else values['5'] if planet==5 else values['6'] if planet==6 else values['7'] if planet==7 else values['8'] if planet==8 else values['9'] if planet==9 else values['10'] if planet==10 else values['11'] if planet==11 else values['3'])  #else earths period 365. nafaa ku update ya period.
 
             mean_anomaly=mean_motion*days_elapsed
             x_coord=math.cos(math.radians(mean_anomaly))
@@ -319,12 +323,12 @@ class Astro:
             
             console.print(f'[bold yellow]For day {days_elapsed}: {(x_coord,y_coord)}')
 
-            del mean_motion
-            del mean_anomaly               
-            del x_coord
-            del y_coord
+            #del mean_motion
+            #del mean_anomaly               
+            #del x_coord
+            #del y_coord
 
-        if period!=-1:
+        if period!=-1 and eccentric==None:
             table=Table(title='...SOLAR SYSTEM...')
             table.add_column('Day',style='Cyan')
             table.add_column('Angle\n(degrees)',style='magenta')
@@ -344,41 +348,59 @@ class Astro:
             
             console.print(table)
 
-            del mean_motion                                                 del mean_anomaly
-            del x_coord
-            del y_coord
+            #del mean_motion
+            #del mean_anomaly
+            #del x_coord
+            #del y_coord
             
 
-            if eccentric:
-                if days_elapsed!=0:
-                    mean_motion=days_elapsed/values['1'] if planet==1 else values['2'] if planet==2 else values['3'] if planet==3 else values['4'] if planet==4 else values['5'] if planet==5 else values['6'] if planet==6 else values['7'] if planet==7 else values['8'] if planet==8 else values['9'] if planet==9 else values['10'] if planet==10 else values['11'] if planet==11 else period if period!=-1 else values['3']
+        if eccentric:
+            if days_elapsed!=0:
+                mean_motion=days_elapsed/values['1'] if planet==1 else values['2'] if planet==2 else values['3'] if planet==3 else values['4'] if planet==4 else values['5'] if planet==5 else values['6'] if planet==6 else values['7'] if planet==7 else values['8'] if planet==8 else values['9'] if planet==9 else values['10'] if planet==10 else values['11'] if planet==11 else period if period!=-1 else values['3']
+# add a vonsole.print for days_elapsed..
 
-
-                    mean_anomaly=mean_motion*(2*math.pi) #2*pi=360 degrees. true anomaly==M..converted into radians
-                    eccentric_anomaly=mean_anomaly #start with a guess eg E=M
+                mean_anomaly=mean_motion*(2*math.pi) #2*pi=360 degrees. true anomaly==M..converted into radians
+                eccentric_anomaly=mean_anomaly #start with a guess eg E=M
                     # using the Newton raphson method
-                    for i in range(5):
-                        eccentric_anomaly=eccentric_anomaly-((eccentric_anomaly-(vallues['1'] if planet==1 else vallues['2'] if planet==2 else vallues['3'] if planet==3 else vallues['4'] if planet==4 else vallues['5'] if planet==5 else vallues['6'] if planet==6 else vallues['7'] if planet==7 else vallues['8'] if planet==8 else vallues['9'] if planet==9 else vallues['10'] if planet==10 else vallues['11'] if planet==11 else valllues['88'] if period==88 else valllues['225'] if period==225 else valllues['365'] if period==365 else valllues['687'] if period==687 else valllues['1681'] if period==1681 else valllues['4333'] if period==4333 else valllues['10759'] if period==10759 else valllues['30685'] if period==30685 else valllues['60190'] if period==60190 else valllues['90465'] if period==90465 else valllues['204174'] if period==204174 else self.Earth_e)*math.sin(eccentric_anomaly)-mean_anomaly)/(1-(vallues['1'] if planet==1 else vallues['2'] if planet==2 else vallues['3'] if planet==3 else vallues['4'] if planet==4 else vallues['5'] if planet==5 else vallues['6'] if planet==6 else vallues['7'] if planet==7 else vallues['8'] if planet==8 else vallues['9'] if planet==9 else vallues['10'] if planet==10 else vallues['11'] if planet==11 else valllues['88'] if period==88 else valllues['225'] if period==225 else valllues['365'] if period==365 else valllues['687'] if period==687 else valllues['1681'] if period==1681 else valllues['4333'] if period==4333 else valllues['10759'] if period==10759 else valllues['30685'] if period==30685 else valllues['60190'] if period==60190 else valllues['90465'] if period==90465 else valllues['204174'] if period==204174 else self.Earth_e)*math.cos(eccentric_anomaly))
-
-                    #use self. instead of the countless dictionaries
-
-                    #position=((val['1'] if planet==1 else val['2'] if planet==2 else val['3'] if planet==3 else val['4'] if planet==4 else val['5'] if planet==5 else val['6'] if planet==6 else val['7'] if planet==7 else val['8'] if planet==8 else val['9'] if planet==9 else val['10'] if planet==10 else val['11'] if planet==11 else val['1'] if period==88 else val['2'] if period==225 else val['3'] if period==365 else val['4'] if period==687 else val['5'] if period==1681 else val['6'] if period==4333 else val['7'] if period==10759 else val['8'] if period==30685 else val['9'] if period==60190 else val['10'] if period==90465 else val['11'] if period==204174 else self.Earth_AU)*(1-(self.Mercury_e if planet==1 else self.Venus_e if planet==2 else self.Earth_e if planet==3 else self.Mars_e if planet==4 else self.Ceres_e if planet==5 else self.Jupiter_e if planet==6 else self.Saturn_e if planet==7 else self.Uranus_e if planet==8 else self.Neptune_e if planet==9 else self.Pluto_e if planet==10 else self.Eris_e if planet==11 else self.Mercury_e if period==88 else self.Venus_e if period==225 else self.Earth_e if planet==365 else self.Mars_e if period==687 else self.Ceres_e if period==1681 else self.Jupiter_e if period==4333 else self.Saturn_e if period==10759 else self.Uranus_e if period==30685 else self.Neptune_e if period==60190 else self.Pluto_e if period==90465 else self.Eris_e if period==204174)*math.cos(eccentric_anomaly)))
-                    b=(self.Mercury_AU if planet==1 else self.Venus_AU if planet==2 else self.Earth_AU if planet==3 else self.Mars_AU if planet==4 else self.Ceres_AU if planet==5 else self.Jupiter if planet==6 else self.Saturn_AU if planet==7 else self.Uranus_AU if planet==8 else self.Neptune_AU if planet==9 else self.Pluto_AU if planet==10 else self.Eris_AU if planet==11 else self.Mercury_AU if period==88 else self.Venus_AU if period==225 else self.Earth_AU if period==365 else self.Mars_AU if period==687 else self.Ceres_AU if period==1681 else self.Jupiter if period==4333 else self.Saturn_AU if period==10759 else self.Uranus_AU if period==30685 else self.Neptune_AU if period==60190 else self.Pluto_AU if period==90465 else self.Eris_AU if period==204174 else self.Earth_AU)*math.sqrt(1-math.pow(vallues['1'] if planet==1 else vallues['2'] if planet==2 else vallues['3'] if planet==3 else vallues['4'] if planet==4 else vallues['5'] if planet==5 else vallues['6'] if planet==6 else vallues['7'] if planet==7 else vallues['8'] if planet==8 else vallues['9'] if planet==9 else vallues['10'] if planet==10 else vallues['11'] if planet==11 else valllues['88'] if period==88 else valllues['225'] if period==225 else valllues['365'] if period==365 else valllues['687'] if period==687 else valllues['1681'] if period==1681 else valllues['4333'] if period==4333 else valllues['10759'] if period==10759 else valllues['30685'] if period==30685 else valllues['60190'] if period==60190 else valllues['90465'] if period==90465 else valllues['204174'] if period==204174 else self.Earth_e,2))
+                for i in range(5):
+                    eccentric_anomaly=eccentric_anomaly-((eccentric_anomaly-(vallues['1'] if planet==1 else vallues['2'] if planet==2 else vallues['3'] if planet==3 else vallues['4'] if planet==4 else vallues['5'] if planet==5 else vallues['6'] if planet==6 else vallues['7'] if planet==7 else vallues['8'] if planet==8 else vallues['9'] if planet==9 else vallues['10'] if planet==10 else vallues['11'] if planet==11 else valllues['88'] if period==88 else valllues['225'] if period==225 else valllues['365'] if period==365 else valllues['687'] if period==687 else valllues['1681'] if period==1681 else valllues['4333'] if period==4333 else valllues['10759'] if period==10759 else valllues['30685'] if period==30685 else valllues['60190'] if period==60190 else valllues['90465'] if period==90465 else valllues['204174'] if period==204174 else self.Earth_e)*math.sin(eccentric_anomaly)-mean_anomaly)/(1-(vallues['1'] if planet==1 else vallues['2'] if planet==2 else vallues['3'] if planet==3 else vallues['4'] if planet==4 else vallues['5'] if planet==5 else vallues['6'] if planet==6 else vallues['7'] if planet==7 else vallues['8'] if planet==8 else vallues['9'] if planet==9 else vallues['10'] if planet==10 else vallues['11'] if planet==11 else valllues['88'] if period==88 else valllues['225'] if period==225 else valllues['365'] if period==365 else valllues['687'] if period==687 else valllues['1681'] if period==1681 else valllues['4333'] if period==4333 else valllues['10759'] if period==10759 else valllues['30685'] if period==30685 else valllues['60190'] if period==60190 else valllues['90465'] if period==90465 else valllues['204174'] if period==204174 else self.Earth_e)*math.cos(eccentric_anomaly)))
+                    
+                print(eccentric_anomaly)
                 
 
-                    x_coord=(self.Mercury_AU if planet==1 else self.Venus_AU if planet==2 else self.Earth_AU if planet==3 else self.Mars_AU if planet==4 else self.Ceres_AU if planet==5 else self.Jupiter if planet==6 else self.Saturn_AU if planet==7 else self.Uranus_AU if planet==8 else self.Neptune_AU if planet==9 else self.Pluto_AU if planet==10 else self.Eris_AU if planet==11)*(math.cos(eccentric_anomaly)-(vallues['1'] if planet==1 else vallues['2'] if planet==2 else vallues['3'] if planet==3 else vallues['4'] if planet==4 else vallues['5'] if planet==5 else vallues['6'] if planet==6 else vallues['7'] if planet==7 else vallues['8'] if planet==8 else vallues['9'] if planet==9 else vallues['10'] if planet==10 else vallues['11'] if planet==11 else valllues['88'] if period==88 else valllues['225'] if period==225 else valllues['365'] if period==365 else valllues['687'] if period==687 else valllues['1681'] if period==1681 else valllues['4333'] if period==4333 else valllues['10759'] if period==10759 else valllues['30685'] if period==30685 else valllues['60190'] if period==60190 else valllues['90465'] if period==90465 else valllues['204174'] if period==204174 else self.Earth_e))
+                #use self. instead of the countless dictionaries
+
+                #position=((val['1'] if planet==1 else val['2'] if planet==2 else val['3'] if planet==3 else val['4'] if planet==4 else val['5'] if planet==5 else val['6'] if planet==6 else val['7'] if planet==7 else val['8'] if planet==8 else val['9'] if planet==9 else val['10'] if planet==10 else val['11'] if planet==11 else val['1'] if period==88 else val['2'] if period==225 else val['3'] if period==365 else val['4'] if period==687 else val['5'] if period==1681 else val['6'] if period==4333 else val['7'] if period==10759 else val['8'] if period==30685 else val['9'] if period==60190 else val['10'] if period==90465 else val['11'] if period==204174 else self.Earth_AU)*(1-(self.Mercury_e if planet==1 else self.Venus_e if planet==2 else self.Earth_e if planet==3 else self.Mars_e if planet==4 else self.Ceres_e if planet==5 else self.Jupiter_e if planet==6 else self.Saturn_e if planet==7 else self.Uranus_e if planet==8 else self.Neptune_e if planet==9 else self.Pluto_e if planet==10 else self.Eris_e if planet==11 else self.Mercury_e if period==88 else self.Venus_e if period==225 else self.Earth_e if planet==365 else self.Mars_e if period==687 else self.Ceres_e if period==1681 else self.Jupiter_e if period==4333 else self.Saturn_e if period==10759 else self.Uranus_e if period==30685 else self.Neptune_e if period==60190 else self.Pluto_e if period==90465 else self.Eris_e if period==204174)*math.cos(eccentric_anomaly)))
+                b=(self.Mercury_AU if planet==1 else self.Venus_AU if planet==2 else self.Earth_AU if planet==3 else self.Mars_AU if planet==4 else self.Ceres_AU if planet==5 else self.Jupiter_AU if planet==6 else self.Saturn_AU if planet==7 else self.Uranus_AU if planet==8 else self.Neptune_AU if planet==9 else self.Pluto_AU if planet==10 else self.Eris_AU if planet==11 else self.Mercury_AU if period==88 else self.Venus_AU if period==225 else self.Earth_AU if period==365 else self.Mars_AU if period==687 else self.Ceres_AU if period==1681 else self.Jupiter if period==4333 else self.Saturn_AU if period==10759 else self.Uranus_AU if period==30685 else self.Neptune_AU if period==60190 else self.Pluto_AU if period==90465 else self.Eris_AU if period==204174 else self.Earth_AU)*math.sqrt(1-math.pow(vallues['1'] if planet==1 else vallues['2'] if planet==2 else vallues['3'] if planet==3 else vallues['4'] if planet==4 else vallues['5'] if planet==5 else vallues['6'] if planet==6 else vallues['7'] if planet==7 else vallues['8'] if planet==8 else vallues['9'] if planet==9 else vallues['10'] if planet==10 else vallues['11'] if planet==11 else valllues['88'] if period==88 else valllues['225'] if period==225 else valllues['365'] if period==365 else valllues['687'] if period==687 else valllues['1681'] if period==1681 else valllues['4333'] if period==4333 else valllues['10759'] if period==10759 else valllues['30685'] if period==30685 else valllues['60190'] if period==60190 else valllues['90465'] if period==90465 else valllues['204174'] if period==204174 else self.Earth_e,2))
+                
+
+                x_coord=(self.Mercury_AU if planet==1 else self.Venus_AU if planet==2 else self.Earth_AU if planet==3 else self.Mars_AU if planet==4 else self.Ceres_AU if planet==5 else self.Jupiter_AU if planet==6 else self.Saturn_AU if planet==7 else self.Uranus_AU if planet==8 else self.Neptune_AU if planet==9 else self.Pluto_AU if planet==10 else self.Eris_AU if planet==11 else self.Earth_AU)*(math.cos(eccentric_anomaly)-(vallues['1'] if planet==1 else vallues['2'] if planet==2 else vallues['3'] if planet==3 else vallues['4'] if planet==4 else vallues['5'] if planet==5 else vallues['6'] if planet==6 else vallues['7'] if planet==7 else vallues['8'] if planet==8 else vallues['9'] if planet==9 else vallues['10'] if planet==10 else vallues['11'] if planet==11 else valllues['88'] if period==88 else valllues['225'] if period==225 else valllues['365'] if period==365 else valllues['687'] if period==687 else valllues['1681'] if period==1681 else valllues['4333'] if period==4333 else valllues['10759'] if period==10759 else valllues['30685'] if period==30685 else valllues['60190'] if period==60190 else valllues['90465'] if period==90465 else valllues['204174'] if period==204174 else self.Earth_e))
                     
-                    y_coord=(b*math.sin(eccentric_anomaly))
+                y_coord=(b*math.sin(eccentric_anomaly))
+                console.print(f'\n[bold yellow]Day {days_elapsed}: ({x_coord},{y_coord})[/bold yellow]\n')
+            
+                if period!=-1:
+
+                    table=Table(title='...SOLAR SYSTEM...')
+                    table.add_column('Day',style='Cyan')
+                    table.add_column('Radian',style='magenta')
+                    table.add_column('x_coord',style='Cyan')
+                    table.add_column('y_coord',style='magenta')
 
 
-                    table=Table('...SOLAR SYSTEM...')
-                    table.add_column
+
+                    for day in range(period+1):
+                        x_coord=(self.Mercury_AU if planet==1 else self.Venus_AU if planet==2 else self.Earth_AU if planet==3 else self.Mars_AU if planet==4 else self.Ceres_AU if planet==5 else self.Jupiter_AU if planet==6 else self.Saturn_AU if planet==7 else self.Uranus_AU if planet==8 else self.Neptune_AU if planet==9 else self.Pluto_AU if planet==10 else self.Eris_AU if planet==11 else self.Earth_AU)*(math.cos(eccentric_anomaly)-(vallues['1'] if planet==1 else vallues['2'] if planet==2 else vallues['3'] if planet==3 else vallues['4'] if planet==4 else vallues['5'] if planet==5 else vallues['6'] if planet==6 else vallues['7'] if planet==7 else vallues['8'] if planet==8 else vallues['9'] if planet==9 else vallues['10'] if planet==10 else vallues['11'] if planet==11 else valllues['88'] if period==88 else valllues['225'] if period==225 else valllues['365'] if period==365 else valllues['687'] if period==687 else valllues['1681'] if period==1681 else valllues['4333'] if period==4333 else valllues['10759'] if period==10759 else valllues['30685'] if period==30685 else valllues['60190'] if period==60190 else valllues['90465'] if period==90465 else valllues['204174'] if period==204174 else self.Earth_e))
+
+                        y_coord=(b*math.sin(eccentric_anomaly))
+
+                        table.add_row(f'{day}',f'{mean_anomaly}',f'{x_coord}',f'{y_coord}')
+
+                    console.print(table)
 
 
 
-
-
-
+                        
 
 
 
@@ -504,9 +526,10 @@ def distance(astro,parallax,distance,light_years):
 @click.option('--days_elapsed',default=0,help='the number of days elapsed since the epoch',type=int)
 @click.option('--period',default=-1,help='the period in days for the planet. Use int as the number type',type=int)
 @click.option('--planet',default=None,help='the object value 1 for Mercury\n2 for Venus\n3 for Earth\n4 for Mars\n5 for Ceres \n6 for Jupiter\n7 for Saturn\n8 for Uranus\n9 for Neptune\n10 for Pluto\n11 for Eris.',type=int)
+@click.option('--eccentric',default=None,help='inputing this will activate eccentric orbits')
 @click.pass_obj
-def orbit(astro,days_elapsed,period,planet):
-    astro.orbit(days_elapsed,period,planet)
+def orbit(astro,days_elapsed,period,planet,eccentric):
+    astro.orbit(days_elapsed,period,planet,eccentric)
 
 
 if __name__ == '__main__':                                          term()

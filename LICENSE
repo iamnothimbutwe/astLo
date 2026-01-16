@@ -19,9 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
- Project Status & Disclaimer
-​Lemo Engine is an orbital mechanics simulation tool built for educational and research purposes.
-​Calculations: Uses Keplerian elements and Newton-Raphson iterations for planetary positioning.
-​Accuracy: While designed with precision in mind, this software is not flight-certified for real-world space navigation.
-​License: Provided under the MIT License—free to use, but use at your own risk.

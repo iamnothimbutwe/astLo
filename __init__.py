@@ -5,6 +5,7 @@ from rich.console import Console
 import click
 import sys
 
+email='markmacgh@gmail.com/hecateare@gmail.com' 
 
 class Astro:
     '''an astrophysics engine'''
@@ -307,6 +308,8 @@ class Astro:
             else:
                 print('\nonly supports 11 objects in the solar system.check the table contained in the initializing function to see the objects.use 1--11.\n')
                 sys.exit(0)
+
+                # or use .get() to get the values if pkanet==1 ..pmanet==11 and a fallback value = period if period!=-1
 
         values={'1':88,'2':225,'3':365,'4':687,'5':1681,'6':4333,'7':10759,'8':30685,'9':60190,'10':90465,'11':204174} # the values are the period in days. used 365.25
         vallues={'1':self.Mercury_e,'2':self.Venus_e,'3':self.Earth_e,'4':self.Mars_e,'5':self.Ceres_e,'6':self.Jupiter_e,'7':self.Saturn_e,'8':self.Uranus_e,'9':self.Neptune_e,'10':self.Pluto_e,'11':self.Eris_e}

@@ -488,6 +488,7 @@ class Astro:
         #print('listing of function arguments respectively:\n(harmonic fxn): 1.velocity 2.distance btwn the two objects/masses 3.mass 4.Mass')
 
 
+
 @click.group()
 #@click.option(help='in some calculations, only one mass is required.you can use either of the --mass/--Mass options.In other calculations both the masses are required therefore use the two options --mass/--Mass respectively')
 @click.option('--tble',default=None,help='if not None, a table containing values of the solar system will be printed to the console')
@@ -560,4 +561,10 @@ def orbit(astro,days_elapsed,period,planet,eccentric):
     astro.orbit(days_elapsed,period,planet,eccentric)
 
 
-if __name__ == '__main__':                                          term()
+
+def main():
+    term()
+
+if __name__ == '__main__':
+    main()
+    #term()

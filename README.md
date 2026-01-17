@@ -20,15 +20,17 @@ Technical Stack:
  Stellar Proper Motion (Mapping the movement of stars over centuries).
  Atmospheric Refraction correction.
  Light-time lag integration for observer-to-planet COordinates.
- weins displacement and why at that temperature a 'black body' appears as it is. or emits light at a certain
-wavelength. 
+ weins displacement and why at that temperature a 'black body' appears as it is. or emits light at a certain wavelength. 
 and more..
 
 
 Project Status & Disclaimer
 ​Lemo Engine is an orbital mechanics simulation tool built for educational and research purposes.
+
 ​Calculations: Uses Keplerian elements and Newton-Raphson iterations for planetary positioning.
+
 ​Accuracy: While designed with precision in mind, this software is not flight-certified for real-world space navigation.
+
 ​License: Provided under the MIT License—free to use, but use at your own risk.
 
 ## Installation

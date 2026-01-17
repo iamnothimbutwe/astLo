@@ -492,6 +492,7 @@ class Astro:
 @click.group()
 #@click.option(help='in some calculations, only one mass is required.you can use either of the --mass/--Mass options.In other calculations both the masses are required therefore use the two options --mass/--Mass respectively')
 @click.option('--tble',default=None,help='if not None, a table containing values of the solar system will be printed to the console')
+@click.version_option(version='0.1.0, developer: @iamnothimbutwe on github. 2026')
 @click.pass_context
 def term(ctx,tble):
     ctx.obj=Astro(tble)

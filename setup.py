@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="astlo",
-    version="0.1.0",
+    version="0.1.2",
     description="Orbital mechanics engine for planetary calculations",
     author="iamnothimbutwe/Mark",
     py_modules=["astlo"], # This points to astlo.py

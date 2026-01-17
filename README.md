@@ -38,4 +38,4 @@ Project Status & Disclaimer
 To install astlo directly from source:
 
 ```bash
-pip install git+[https://github.com/iamnothimbutwe/astLo.git](https://github.com/iamnothimbutwe/astLo.git)
+pip install git+https://github.com/iamnothimbutwe/astLo.git
